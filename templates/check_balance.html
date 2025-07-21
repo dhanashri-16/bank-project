@@ -13,7 +13,8 @@
 
         <form action="/check_balance" method="POST">
             <label for="email">Email: </label>
-            <input type="text" id="account_no" name="email" required>
+            <input type="text" id="email" name="email" required>
+
             <label for="account_no">ACCOUNT NUMBER:</label>
             <input type="text" id="account_no" name="account_no" required>
 
@@ -21,7 +22,7 @@
         </form>
 
         {% if balance is not none %}
-            <p style="color: black;">{{ account_no }} {{ balance }}</p>
+            <p style="color: black;"> {{ account_no }} {{ balance }}</p>
         {% elif error %}
             <p style="color: red;">{{ error }}</p>
         {% endif %}
@@ -32,3 +33,4 @@
 </body>
 
 </html>
+
