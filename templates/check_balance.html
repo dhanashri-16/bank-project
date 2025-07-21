@@ -21,7 +21,7 @@
         </form>
 
         {% if balance is not none %}
-            <p style="color: black;">BALANCE FOR ACCOUNT {{ account_no }}: ₹{{ balance }}</p>
+            <p style="color: black;">BALANCE FOR ACCOUNT{{ account_no }}: ₹{{ balance }}</p>
         {% elif error %}
             <p style="color: red;">{{ error }}</p>
         {% endif %}
