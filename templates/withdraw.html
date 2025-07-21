@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WITHDRAW MONEY</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>WITHDRAW FROM ACCOUNT</h2>
+
+        <form id="withdraw-form" action="/withdraw" method="POST">
+            <label for="email">EMAIL:</label>
+            <input type="text" id="email" name="email" onblur="fetchAccountDetails('email')" placeholder="Enter email">
+
+            <label for="account_number">ACCOUNT NUMBER:</label>
+            <input type="text" id="account_number" name="account_no" onblur="fetchAccountDetails('account')" placeholder="Enter account number">
+
+            <div id="account-details">
+                <!-- Dynamic account details will appear here -->
+            </div>
+
+            <label>AMOUNT:</label>
+            <input type="number" name="amount" step="0.01" required>
+
+            <button type="submit">WITHDRAW</button>
+        </form>
+
+        <script>
+            function fetchAccountDetails(type) {
+                const value = type === 'email'
+                    ? document.getElementById('email').value.trim()
+                    : document.getElementById('account_number').value.trim();
+
+                if (value === '') {
+                    document.getElementById('account-details').innerHTML = '';
+                    return;
+                }
+
+                fetch(`/get_account?${type}=${encodeURIComponent(value)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('account-details').innerHTML = `
+                                <p><strong>Name:</strong> ${data.account.name}</p>
+                                <p><strong>Email:</strong> ${data.account.email}</p>
+                                <p><strong>Account Number:</strong> ${data.account.account_number}</p>
+                                <p><strong>Balance:</strong> $${data.account.balance.toFixed(2)}</p>
+                                
+                            `;
+                        } else {
+                            document.getElementById('account-details').innerHTML = `<p style="color:red;">${data.message}</p>`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching account:', error);
+                    });
+            }
+        </script>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bank Home</title>
+  <style>
+    body, h1, ul, li {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      animation-delay: 0.3s;
+
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e3f2fd, #ffffff);
+      padding: 30px;
+      color: #333;
+      background-image: url(https://img.freepik.com/free-photo/gradient-navy-blue-digital-grid-wallpaper_53876-104785.jpg?semt=ais_hybrid&w=740);
+      animation-delay: 0.3s;
+
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 25px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      color: #0077cc;
+      margin-bottom: 50px;
+      animation-delay: 0ms;
+
+    }
+
+    ul {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+      align-items: center;
+    }
+
+    ul li a {
+      text-decoration: none;
+      color: #0077cc;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: 2px solid #0077cc;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    ul li a:hover {
+      background-color: #0077cc;
+      color: #fff;
+      
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to the Bank</h1>
+    <ul>
+      <li><a href="/create_account">Create Account</a></li>
+      <li><a href="/deposit">Deposit</a></li>
+      <li><a href="/withdraw">Withdraw</a></li>
+      <li><a href="/check_balance">Check Balance</a></li>
+    </ul>
+  </div>
+</body>
+</html>
+

@@ -1,0 +1,382 @@
+/* Reset some default styles */
+body,h1,ul,li,form,input,select,
+button {
+  margin: 5px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: aquamarine;
+  color: #333333;
+  padding: 20px;
+  text-align: center;
+
+}
+
+/* Header styling */
+h1 {
+  margin-bottom: 50px;
+  color: chocolate;
+}
+
+/* Navigation list */
+ul {
+  list-style-type: none;
+  margin-bottom: 50px;
+}
+
+ul li {
+  margin: 10px 0;
+}
+
+/* front style*/
+ul li a {
+  text-decoration: double;
+  color: aqua;
+  font-size: 40px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-style: italic;
+  font-weight: bold;
+  margin: 10px;
+  padding: 10px;
+  box-sizing: content-box;
+  box-shadow: cadetblue;
+  animation-delay: 0.3s;
+}
+
+ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Form styling */
+form {
+  background-color: antiquewhite;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="number"],
+form select {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 15px;
+  border: 10px solid #cccccc;
+  border-radius: 4px;
+  background-size: cover;
+}
+
+form input[type="submit"],
+button {
+  background-color: #333333;
+  color: antiquewhite;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form input[type="submit"]:hover,
+button:hover {
+  background-color: darkgoldenrod;
+}
+
+/* Message styles */
+p {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+p[style*="color: green"] {
+  color: darkgoldenrod;
+}
+
+p[style*="color: red"] {
+  color: red;
+}
+
+body {
+  margin: 10px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center-content {
+  text-align: center;
+}
+
+body {
+  background-color: navajowhite;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  background-color: darkcyan;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px darkcyan(0, 0, 0, 0.1);
+  text-align: center;
+
+  margin: auto;
+  box-shadow: cadetblue;
+}
+
+h1 {
+  margin-bottom: 10px;
+  color: darksalmon;
+  text-align: center;
+}
+
+.menu {
+  list-style: none;
+  list-style-type: circle;
+  padding: 0;
+}
+
+.item {
+  opacity: 0;
+  margin: 10px 0;
+  font-size: 18px;
+  color: moccasin;
+  animation: fadeIn 0.6s forwards;
+}
+
+/* Animate one by one using delay */
+.item:nth-child(1) {
+  animation-delay: 0.5s;
+}
+
+.item:nth-child(2) {
+  animation-delay: 1s;
+}
+
+.item:nth-child(3) {
+  animation-delay: 1.5s;
+}
+
+.item:nth-child(4) {
+  animation-delay: 2s;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+body {
+  background-color: #85004b;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 10px;
+}
+
+form {
+  background-color: darkcyan;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px darkcyan(0, 0, 0, 0.1);
+  width: 300px;
+}
+
+h2,
+.form-group {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s forwards;
+}
+
+h2 {
+  animation-delay: 0.3s;
+  text-align: center;
+  color: #85004b;
+  margin-bottom: 20px;
+}
+
+.form-group:nth-child(2) {
+  animation-delay: 0.6s;
+}
+
+.form-group:nth-child(3) {
+  animation-delay: 0.9s;
+}
+
+.form-group:nth-child(4) {
+  animation-delay: 1.2s;
+}
+
+.form-group:nth-child(5) {
+  animation-delay: 1.5s;
+}
+
+.form-group:nth-child(6) {
+  animation-delay: 1.8s;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: lightgrey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url(https://img.freepik.com/free-photo/abstract-digital-grid-black-background_53876-97647.jpg?semt=ais_hybrid&w=740);
+}
+
+.container {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Heading */
+h1 {
+  margin-bottom: 30px;
+  font-size: 32px;
+  color: #333;
+}
+
+/* Wrapper for Login and Sign In */
+.login-signin-wrapper {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-start;
+  animation: dropUp 0.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(50px);
+  /* Start lower for animation */
+}
+
+/* Drop-up Animation */
+@keyframes dropUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Common Section Styling */
+section {
+  background: white;
+  padding: 20px;
+  width: 250px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid #007BFF;
+  text-align: left;
+}
+
+section h2 {
+  color: darkgray;
+  margin-bottom: 50px;
+  border-bottom: 2px solid #007BFF;
+  padding-bottom: 60px;
+}
+
+section h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #333;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+/* Login List */
+.login ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.login ul li {
+  margin-bottom: 12px;
+}
+
+.login ul li a {
+  text-decoration: none;
+  color: #007BFF;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.login ul li a:hover {
+  color: #0056b3;
+}
+
+/* Form Styles */
+form label {
+  font-weight: 600;
+  margin-top: 10px;
+  display: block;
+  color: #444;
+}
+
+form input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 12px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+  background-color: #f0f2f5;
+}
+
+/* Clear and strong text inside input */
+form input::placeholder {
+  color: #f0f2f5;
+}
+
+form input:focus {
+  border-color: #f0f2f5;
+  outline: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-signin-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  section {
+    width: 50%;
+  }
+}

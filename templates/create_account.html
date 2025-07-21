@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CREATE ACCOUNT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>CREATE A NEW ACCOUNT</h2>
+        <form action="/create_account" method="post">
+            <label> FIRST NAME :</label>
+            <input type="text" name="first_name">
+            <label>LAST NAME :</label>
+            <input type="text" name="last_name">
+            <label>E-mail :</label>
+            <input type="text" name="email">
+            <label>ACCOUNT TYPE :</label>
+            <select name="account_type">
+                <option>savings</option>
+                <option>current</option>
+
+            </select>
+            <label>INITIAL BALANCE :</label>
+            <input type="number" name="initial_balance">
+            <button type="submit">create</button>
+        </form>
+        <a href="/" class="back to home"> back to home</a>
+
+
+    </div>
+</body>
+
+</html>

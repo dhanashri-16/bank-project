@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CHECK BALANCE</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>CHECK ACCOUNT BALANCE</h2>
+
+        <form action="/check_balance" method="POST">
+            <label for="email">Email: </label>
+            <input type="text" id="account_no" name="email" required>
+            <label for="account_no">ACCOUNT NUMBER:</label>
+            <input type="text" id="account_no" name="account_no" required>
+
+            <button type="submit">CHECK BALANCE</button>
+        </form>
+
+        {% if balance is not none %}
+            <p style="color: black;">BALANCE FOR ACCOUNT {{ account_no }}: ₹{{ balance }}</p>
+        {% elif error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+
+        <a href="/" class="back to home">BACK TO HOME</a>
+    </div>
+
+</body>
+
+</html>
