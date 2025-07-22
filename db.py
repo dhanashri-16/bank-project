@@ -44,7 +44,7 @@ def fetch_all_accounts_with_users():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     sql = """
-    SELECT u.user_id, u.first_name, u.last_name, a.account_number, a.account_type, a.balance
+    SELECT u.user_id, u.first_name, u.last_name, a.account_number, a.account_type, a.balance, u.email
     FROM users u
     JOIN accounts a ON u.user_id = a.user_id
     """
@@ -94,5 +94,8 @@ def get_balance_by_account_number(account_number):
     result = cursor.fetchone()
     conn.close()
     return result[0] if result else None
+
+
+
 
 

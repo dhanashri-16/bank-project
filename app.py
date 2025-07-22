@@ -26,55 +26,76 @@ def create_account_route():
 @app.route('/deposit', methods=['GET', 'POST'])
 def deposit_route():
     if request.method == 'POST':
-        acc_no = request.form['account_no']
-        amount = int(request.form['amount'])
-        if acc_no in accounts:
-            accounts[acc_no].deposit(amount)  # assuming deposit method exists
-            return render_template('success.html', message="Deposit successful.", data=accounts[acc_no])
+        account_no = request.form['account_no']
+        email = request.form['email']
+        amount = int(request.form['amount'])  
+
+        account_data = accounts.get(account_no)
+
+        if account_data and account_data.email == email:
+            if amount > 0:
+                account_data.balance += amount  
+                return render_template(
+                    'success.html',
+                    message=f"Deposit of ₹{amount} successful. New balance: ₹{account_data.balance}",
+                    data=account_data
+                )
+            else:
+                return render_template(
+                    'success.html',
+                    message="Invalid deposit amount.",
+                    data=account_data
+                )
         else:
             return render_template('success.html', message="Account not found.")
+    
     return render_template('deposit.html')
+
 
 
 @app.route('/withdraw', methods=['GET', 'POST'])
 def withdraw_route():
     if request.method == 'POST':
-        acc_no = request.form['account_no']
-        amount = int(request.form['amount'])
-        if acc_no in accounts:
-            success = accounts[acc_no].withdraw(amount)  # assuming withdraw method exists
-            if success:
-                return render_template('success.html', message="Withdrawal successful.", data=accounts[acc_no])
+        account_no = request.form['account_no']
+        email = request.form['email']
+        amount = int(request.form['amount'])  
+
+        account_data = accounts.get(account_no)
+
+        if account_data and account_data.email == email:
+            if amount > 0 and account_data.balance >= amount:
+                account_data.balance -= amount  
+                return render_template(
+                    'success.html',
+                    message=f"Withdrawal of ₹{amount} successful. Remaining balance: ₹{account_data.balance}",
+                    data=account_data
+                )
             else:
-                return render_template('success.html', message="Insufficient funds.", data=accounts[acc_no])
+                return render_template(
+                    'success.html',
+                    message="Insufficient balance or invalid amount.",
+                    data=account_data
+                )
         else:
             return render_template('success.html', message="Account not found.")
+    
     return render_template('withdraw.html')
+
 
 @app.route('/check_balance', methods=['GET', 'POST'])
 def check_balance_route():
     if request.method == 'POST':
         account_no = request.form['account_no']
-        account_data = accounts.get(account_no)
-    if request.method == 'post':
         email = request.form['email']
-        email_data = email.get(email)
-        
-        if account_data:
+
+        account_data = accounts.get(account_no)
+
+        if account_data and account_data.email == email:  
             return render_template(
                 'success.html',
                 message="Balance fetched successfully.",
                 data=account_data
             )
-        if email_data:
-            return render_template(
-                'success.html',
-                message="Balanced fetched successfully.",
-                data=email_data
-            )
-
-        
-
         else:
             return render_template('success.html', message="Account not found.")
     
