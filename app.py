@@ -54,12 +54,32 @@ def withdraw_route():
 @app.route('/check_balance', methods=['GET', 'POST'])
 def check_balance_route():
     if request.method == 'POST':
-        acc_no = request.form['account_no']
-        if acc_no in accounts:
-            return render_template('success.html', message="Balance fetched successfully.", data=accounts[acc_no])
+        account_no = request.form['account_no']
+        account_data = accounts.get(account_no)
+    if request.method == 'post':
+        email = request.form['email']
+        email_data = email.get(email)
+        
+        if account_data:
+            return render_template(
+                'success.html',
+                message="Balance fetched successfully.",
+                data=account_data
+            )
+        if email_data:
+            return render_template(
+                'success.html',
+                message="Balanced fetched successfully.",
+                data=email_data
+            )
+
+        
+
         else:
             return render_template('success.html', message="Account not found.")
+    
     return render_template('check_balance.html')
+
 
 
 if __name__ == '__main__':
