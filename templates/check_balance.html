@@ -2,35 +2,160 @@
 <html>
 
 <head>
-    <title>CHECK BALANCE</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Check Balance</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .left,
+        .right {
+            width: 48%;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        .right {
+            background-color: #f9f9f9;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        #account_number_group {
+            display: none;
+        }
+
+        input[readonly] {
+            background-color: #eee;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 
 <body>
-
+    <h2>Check Your Balance</h2>
     <div class="container">
-        <h2>CHECK ACCOUNT BALANCE</h2>
+        <!-- LEFT PANEL -->
+        <div class="left">
+            <div class="input-group">
+                <label>Email:</label><br>
+                <input type="email" id="email">
+                <button onclick="verifyEmail()">Fetch Details</button>
+            </div>
 
-        <form action="/check_balance" method="POST">
-            <label for="email">Email: </label>
-            <input type="text" id="email" name="email" required>
+            <div id="account_number_group" class="input-group">
+                <label>Account Number:</label><br>
+                <input type="text" id="account_number" readonly>
+                <button onclick="verifyAccountNumber()">Get Balance</button>
+            </div>
 
-            <label for="account_no">ACCOUNT NUMBER:</label>
-            <input type="text" id="account_no" name="account_no" required>
+            <!-- Back to Home Button -->
+            <div style="margin-top: 20px;">
+                <button onclick="window.location.href='/'" style="padding:8px 15px; cursor:pointer;">
+                    ← Back to Home
+                </button>
+            </div>
+        </div>
 
-            <button type="submit">CHECK BALANCE</button>
-        </form>
-
-        {% if balance is not none %}
-            <p style="color: black;"> {{ account_no }} {{ balance }}</p>
-        {% elif error %}
-            <p style="color: red;">{{ error }}</p>
-        {% endif %}
-
-        <a href="/" class="back to home">BACK TO HOME</a>
+        <!-- RIGHT PANEL -->
+        <div class="right" id="details_box">
+            <div id="result">
+                <p><strong>Account details will appear here.</strong></p>
+            </div>
+        </div>
     </div>
 
+    <script>
+        let validEmail = "";
+        let emailVerified = false;
+
+        function verifyEmail() {
+            const email = document.getElementById('email').value.trim();
+
+            if (!email) {
+                alert("Please enter an email.");
+                return;
+            }
+
+            fetch('/fetch_details', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    const resultDiv = document.getElementById('result');
+
+                    if (data.status === 'success') {
+                        const acc = data.data;
+                        validEmail = email;
+                        emailVerified = true;
+
+                        // Show account number group and fill details (except balance)
+                        document.getElementById('account_number_group').style.display = 'block';
+                        const accInput = document.getElementById('account_number');
+                        accInput.value = acc.account_no;
+                        accInput.readOnly = true;
+
+                        resultDiv.innerHTML = `
+                            <p style="color: green;"><strong>Email found. Account number auto-filled.</strong></p>
+                            <p><strong>Name:</strong> ${acc.first_name} ${acc.last_name}</p>
+                            <p><strong>Email:</strong> ${acc.email}</p>
+                            <p><strong>Account Number:</strong> ${acc.account_no}</p>
+                            <p><strong>Account Type:</strong> ${acc.account_type}</p>
+                            <p><em>Click 'Get Balance' to view your balance.</em></p>
+                        `;
+                    } else {
+                        emailVerified = false;
+                        validEmail = "";
+                        document.getElementById('account_number_group').style.display = 'none';
+                        document.getElementById('account_number').value = "";
+
+                        resultDiv.innerHTML = `<p style="color: red;"><strong>${data.message}</strong></p>`;
+                    }
+                });
+        }
+
+        function verifyAccountNumber() {
+            if (!emailVerified) {
+                alert("Please verify a valid email first.");
+                return;
+            }
+
+            const accountNumber = document.getElementById('account_number').value.trim();
+
+            if (!accountNumber) {
+                alert("Please enter your account number.");
+                return;
+            }
+
+            fetch('/fetch_details', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: validEmail,
+                    account_number: accountNumber
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    const resultDiv = document.getElementById('result');
+
+                    if (data.status === 'success') {
+                        const acc = data.data;
+                        // Append only the balance
+                        resultDiv.innerHTML += `
+                            <p><strong>Balance:</strong> $${Number(acc.balance).toFixed(2)}</p>
+                        `;
+                    } else {
+                        resultDiv.innerHTML = `<p style="color: red;"><strong>${data.message}</strong></p>`;
+                    }
+                });
+        }
+    </script>
 </body>
 
-</html>
-
+</html> 

@@ -1,66 +1,168 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>WITHDRAW MONEY</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Withdraw Funds</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .left,
+        .right {
+            width: 48%;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        .right {
+            background-color: #f9f9f9;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        #account_section {
+            display: none;
+        }
+
+        input[readonly] {
+            background-color: #eee;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 
 <body>
-
+    <h2>Withdraw Funds</h2>
     <div class="container">
-        <h2>WITHDRAW FROM ACCOUNT</h2>
-
-        <form id="withdraw-form" action="/withdraw" method="POST">
-            <label for="email">EMAIL:</label>
-            <input type="text" id="email" name="email" onblur="fetchAccountDetails('email')" placeholder="Enter email">
-
-            <label for="account_number">ACCOUNT NUMBER:</label>
-            <input type="text" id="account_number" name="account_no" onblur="fetchAccountDetails('account')" placeholder="Enter account number">
-
-            <div id="account-details">
-                <!-- Dynamic account details will appear here -->
+        <!-- LEFT PANEL -->
+        <div class="left">
+            <div class="input-group">
+                <label>Email:</label><br>
+                <input type="email" id="email">
+                <button onclick="fetchDetails()">Fetch Details</button>
             </div>
 
-            <label>AMOUNT:</label>
-            <input type="number" name="amount" step="0.01" required>
+            <div id="account_section">
+                <div class="input-group">
+                    <label>Account Number:</label><br>
+                    <input type="text" id="account_number" readonly>
+                </div>
 
-            <button type="submit">WITHDRAW</button>
-        </form>
-            <a href="/" class="back to home"> back to home</a>
+                <div class="input-group">
+                    <label>Amount to Withdraw:</label><br>
+                    <input type="number" id="withdraw_amount" min="1">
+                    <button onclick="withdraw()">Withdraw</button>
+                </div>
+            </div>
 
-        <script>
-            function fetchAccountDetails(type) {
-                const value = type === 'email'
-                    ? document.getElementById('email').value.trim()
-                    : document.getElementById('account_number').value.trim();
+            <div style="margin-top: 20px;">
+                <button onclick="window.location.href='/'" style="padding:8px 15px; cursor:pointer;">
+                    ← Back to Home
+                </button>
+            </div>
+        </div>
 
-                if (value === '') {
-                    document.getElementById('account-details').innerHTML = '';
-                    return;
-                }
-
-                fetch(`/get_account?${type}=${encodeURIComponent(value)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            document.getElementById('account-details').innerHTML = `
-                                <p><strong>Name:</strong> ${data.account.name}</p>
-                                <p><strong>Email:</strong> ${data.account.email}</p>
-                                <p><strong>Account Number:</strong> ${data.account.account_number}</p>
-                                <p><strong>Balance:</strong> $${data.account.balance.toFixed(2)}</p>
-                                
-                            `;
-                        } else {
-                            document.getElementById('account-details').innerHTML = `<p style="color:red;">${data.message}</p>`;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching account:', error);
-                    });
-            }
-        </script>
+        <!-- RIGHT PANEL -->
+        <div class="right" id="details_box">
+            <div id="result">
+                <p><strong>Account details and transaction result will appear here.</strong></p>
+            </div>
+        </div>
     </div>
 
+    <script>
+        let validEmail = "";
+        let emailVerified = false;
+
+        function fetchDetails() {
+            const email = document.getElementById('email').value.trim();
+
+            if (!email) {
+                alert("Please enter an email.");
+                return;
+            }
+
+            fetch('/fetch_details', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    const resultDiv = document.getElementById('result');
+
+                    if (data.status === 'success') {
+                        const acc = data.data;
+                        validEmail = email;
+                        emailVerified = true;
+
+                        document.getElementById('account_section').style.display = 'block';
+                        const accInput = document.getElementById('account_number');
+                        accInput.value = acc.account_no;
+                        accInput.readOnly = true;
+
+                        resultDiv.innerHTML = `
+                            <p style="color: green;"><strong>Email found. Account number auto-filled.</strong></p>
+                            <p><strong>Name:</strong> ${acc.first_name} ${acc.last_name}</p>
+                            <p><strong>Email:</strong> ${acc.email}</p>
+                            <p><strong>Account Number:</strong> ${acc.account_no}</p>
+                            <p><strong>Account Type:</strong> ${acc.account_type}</p>
+                            <p><em>Enter an amount and click 'Withdraw'.</em></p>
+                        `;
+                    } else {
+                        emailVerified = false;
+                        validEmail = "";
+                        document.getElementById('account_section').style.display = 'none';
+                        document.getElementById('account_number').value = "";
+
+                        resultDiv.innerHTML = `<p style="color: red;"><strong>${data.message}</strong></p>`;
+                    }
+                });
+        }
+
+        function withdraw() {
+            if (!emailVerified) {
+                alert("Please verify your email first.");
+                return;
+            }
+
+            const accountNumber = document.getElementById('account_number').value.trim();
+            const amount = parseFloat(document.getElementById('withdraw_amount').value.trim());
+
+            if (!amount || amount <= 0) {
+                alert("Please enter a valid withdrawal amount.");
+                return;
+            }
+
+            fetch('/withdraw', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: validEmail,
+                    account_number: accountNumber,
+                    amount: amount
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    const resultDiv = document.getElementById('result');
+
+                    if (data.status === 'success') {
+                        const acc = data.data;
+                        resultDiv.innerHTML += `
+                            <p style="color: green;"><strong>Withdrawal successful!</strong></p>
+                            <p><strong>New Balance:</strong> $${Number(acc.balance).toFixed(2)}</p>
+                        `;
+                    } else {
+                        resultDiv.innerHTML += `<p style="color: red;"><strong>${data.message}</strong></p>`;
+                    }
+                });
+        }
+    </script>
 </body>
 
 </html>
