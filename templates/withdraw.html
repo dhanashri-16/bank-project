@@ -154,7 +154,9 @@
                     if (data.status === 'success') {
                         const acc = data.data;
                         resultDiv.innerHTML += `
+                            <hr>
                             <p style="color: green;"><strong>Withdrawal successful!</strong></p>
+                            <p><strong>Amount Withdrawn:</strong> $${amount.toFixed(2)}</p>
                             <p><strong>New Balance:</strong> $${Number(acc.balance).toFixed(2)}</p>
                         `;
                     } else {
