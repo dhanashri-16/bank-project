@@ -2,11 +2,12 @@ import random
 import db
 
 class BankAccount:
-    def __init__(self, first_name, last_name, account_type, initial_balance):
+    def __init__(self, first_name, last_name, account_type, initial_balance,email):
         self.first_name = first_name
         self.last_name = last_name
         self.account_type = account_type
         self.balance = initial_balance
+        self.email = email
         self.user_id = self._generate_user_id()
         self.account_no = self._generate_account_no()  # Moved here properly
 
@@ -19,7 +20,6 @@ class BankAccount:
 
     def _generate_user_id(self):
         last_user_id = db.get_last_user_id()
-        print(last_user_id)
         return last_user_id + 1
 
     def deposit(self, amount):
@@ -52,11 +52,15 @@ def load_existing_accounts():
             acc['first_name'],
             acc['last_name'],
             acc['account_type'],
-            acc['balance']
+            acc['balance'],
+            acc['email']  
         )
         acc_obj.account_no = acc['account_number']
         acc_obj.user_id = acc['user_id']
         accounts[acc_obj.account_no] = acc_obj
+
+
+
 
 
 def create_account():
